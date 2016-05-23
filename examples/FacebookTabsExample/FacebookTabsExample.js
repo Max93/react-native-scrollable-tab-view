@@ -1,87 +1,77 @@
-'use strict';
-
-var React = require('react-native');
-var {
+import React from 'react';
+import {
   StyleSheet,
   Text,
   View,
   ScrollView,
-} = React;
+  Navigator,
+  TouchableOpacity,
+} from 'react-native';
+import SimpleExample from './SimpleExample';
+import ScrollableTabsExample from './ScrollableTabsExample';
+import OverlayExample from './OverlayExample';
+import FacebookExample from './FacebookExample';
 
-var ScrollableTabView = require('react-native-scrollable-tab-view');
-var FacebookTabBar = require('./FacebookTabBar');
-
-var FacebookTabsExample = React.createClass({
+export default React.createClass({
   render() {
-    return (
-      <View style={styles.container}>
-        <ScrollableTabView initialPage={1} renderTabBar={() => <FacebookTabBar />}>
-          <ScrollView tabLabel="ion|ios-paper" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>News</Text>
-            </View>
-          </ScrollView>
-          <ScrollView tabLabel="ion|person-stalker" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Friends</Text>
-            </View>
-          </ScrollView>
-          <ScrollView tabLabel="ion|ios-chatboxes" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Messenger</Text>
-            </View>
-          </ScrollView>
-          <ScrollView tabLabel="ion|ios-world" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Notifications</Text>
-            </View>
-          </ScrollView>
-          <ScrollView tabLabel="ion|navicon-round" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Other nav</Text>
-            </View>
-          </ScrollView>
-        </ScrollableTabView>
-      </View>
-    );
-  }
+    return <Navigator
+      style={{flex: 1, }}
+      initialRoute={{}}
+      renderScene={this.renderScene}
+    />;
+  },
+
+  renderScene(route, nav) {
+    switch (route.id) {
+    case 'simple':
+      return <SimpleExample />;
+    case 'scrollable':
+      return <ScrollableTabsExample />;
+    case 'overlay':
+      return <OverlayExample />;
+    case 'facebook':
+      return <FacebookExample />;
+    default:
+      return <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.push({id: 'simple', })}
+        >
+          <Text>Simple example</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.push({id: 'scrollable', })}
+        >
+          <Text>Scrollable tabs example</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.push({id: 'overlay', })}
+        >
+          <Text>Overlay example</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.push({id: 'facebook', })}
+        >
+          <Text>Facebook tabs example</Text>
+        </TouchableOpacity>
+      </View>;
+    }
+  },
 });
 
-var SimpleExample = React.createClass({
-  render() {
-    return (
-      <ScrollableTabView style={{marginTop: 20}}>
-        <Text tabLabel='Tab #1'>My</Text>
-        <Text tabLabel='Tab #2'>favorite</Text>
-        <Text tabLabel='Tab #3'>project</Text>
-      </ScrollableTabView>
-    )
-  }
-});
-
-//module.exports = SimpleExample;
-module.exports = FacebookTabsExample;
-
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
+    alignItems: 'center',
   },
-  tabView: {
-    flex: 1,
+  button: {
     padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.01)',
-  },
-  card: {
-    borderWidth: 1,
-    backgroundColor: '#fff',
-    borderColor: 'rgba(0,0,0,0.1)',
-    margin: 5,
-    height: 150,
-    padding: 15,
-    shadowColor: '#ccc',
-    shadowOffset: {width: 2, height: 2},
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
   },
 });
